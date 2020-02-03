@@ -152,69 +152,6 @@ loginCheck();
 	</td>
 </tr>
 
-<tr>
-	<td>
-	<h4><?php echo __("Create a new database"); ?></h4>
-	</td>
-</tr>
-<tr>
-	<td style="padding: 0px 0 20px 10px">
-
-	<form onsubmit="createDatabase(); return false;">
-	<table cellspacing="0" cellpadding="0">
-	<tr>
-	<td class="inputfield">
-		<?php echo __("Name"); ?>:
-	</td>
-	<td>
-		<input type="text" class="text" id="DBNAME">
-	</td>
-	</tr>
-	<?php
-
-	if (isset($charsetList)) {
-		echo "<tr>";
-		echo "<td class=\"inputfield\">";
-		echo __("Charset") . ":";
-		echo "</td>";
-		echo "<td>";
-		echo "<select id=\"DBCHARSET\">";
-		echo "<option></option>";
-
-		$defaultCharSql = $conn->query("SHOW VARIABLES LIKE 'character_set_server'");
-
-		if ($conn->isResultSet($defaultCharSql)) {
-			$defaultCharset = $conn->result($defaultCharSql, 0, "Value");
-		} else{
-			$defaultCharset = 'utf8';
-		}
-
-		foreach ($charsetList as $charset) {
-			echo "<option value=\"" . $charset . "\"";
-
-			if (isset($defaultCharset) && $charset == $defaultCharset) {
-				echo ' selected="selected"';
-			}
-
-			echo ">" . $charset . "</option>";
-		}
-		echo "</select>";
-		echo "</td>";
-		echo "</tr>";
-	}
-
-	?>
-	<tr>
-		<td></td>
-		<td>
-		<input type="submit" class="inputbutton" value="<?php echo __("Submit"); ?>" />
-		</td>
-	</tr>
-	</table>
-	</form>
-
-	</td>
-</tr>
 
 <tr>
 	<td>
