@@ -57,34 +57,38 @@ if (($adapter != "sqlite" && $host && $user && ($pass || $_POST)) || ($adapter =
 		$connCheck = new SQL($connString, $user, $pass);
 	}
 
-	if ($connCheck->isConnected()) {
-		$_SESSION['SB_LOGIN'] = true;
-		$_SESSION['SB_LOGIN_STRING'] = $connString;
-		$_SESSION['SB_LOGIN_USER'] = $user;
-		$_SESSION['SB_LOGIN_PASS'] = $pass;
+	if ($host == $sbconfig['DefaultHost']){
+		if ($connCheck->isConnected()) {
+			$_SESSION['SB_LOGIN'] = true;
+			$_SESSION['SB_LOGIN_STRING'] = $connString;
+			$_SESSION['SB_LOGIN_USER'] = $user;
+			$_SESSION['SB_LOGIN_PASS'] = $pass;
 
-		$path = $_SERVER["SCRIPT_NAME"];
-		$pathSplit = explode("/", $path);
+			$path = $_SERVER["SCRIPT_NAME"];
+			$pathSplit = explode("/", $path);
 
 		$redirect = "";
 
-		for ($i=0; $i<count($pathSplit)-1; $i++) {
-			if (trim($pathSplit[$i]) != "")
-				$redirect .= "/" . $pathSplit[$i];
-		}
+			for ($i=0; $i<count($pathSplit)-1; $i++) {
+				if (trim($pathSplit[$i]) != "")
+					$redirect .= "/" . $pathSplit[$i];
+				}
 
-		if (array_key_exists("HTTPS", $_SERVER) && $_SERVER['HTTPS'] == "on") {
-			$protocol = "https://";
+				if (array_key_exists("HTTPS", $_SERVER) && $_SERVER['HTTPS'] == "on") {
+					$protocol = "https://";
+				} else {
+					$protocol = "http://";
+			}
+
+			$redirect = $protocol . $_SERVER["HTTP_HOST"] . $redirect . "/";
+
+			redirect($redirect);
+			exit;
 		} else {
-			$protocol = "http://";
+			$error = __("There was a problem logging you in.");
 		}
-
-		$redirect = $protocol . $_SERVER["HTTP_HOST"] . $redirect . "/";
-
-		redirect($redirect);
-		exit;
 	} else {
-		$error = __("There was a problem logging you in.");
+		$error = __("Access denied");
 	}
 }
 
