@@ -84,10 +84,10 @@ function Page() {
 
 	this.topTabs = [new TopTabGroup("Main"), new TopTabGroup("Database"), new TopTabGroup("Table")];
 
-	this.topTabs[0].addTab(gettext("Home"), "home.php").addTab(gettext("Users"), "users.php").addTab(gettext("Query"), "query.php").addTab(gettext("Import"), "import.php").addTab(gettext("Export"), "export.php");
+	this.topTabs[0].addTab(gettext("Home"), "home.php").addTab(gettext("Query"), "query.php");
 
-	this.topTabs[1].addTab(gettext("Overview"), "dboverview.php").addTab(gettext("Query"), "query.php").addTab(gettext("Import"), "import.php").addTab(gettext("Export"), "export.php");
-	this.topTabs[2].addTab(gettext("Browse"), "browse.php").addTab(gettext("Structure"), "structure.php").addTab(gettext("Insert"), "insert.php").addTab(gettext("Query"), "query.php").addTab(gettext("Import"), "import.php").addTab(gettext("Export"), "export.php");
+	this.topTabs[1].addTab(gettext("Overview"), "dboverview.php").addTab(gettext("Query"), "query.php");
+	this.topTabs[2].addTab(gettext("Browse"), "browse.php").addTab(gettext("Structure"), "structure.php").addTab(gettext("Query"), "query.php");
 
 }
 
@@ -313,25 +313,26 @@ function initializeSidemenu() {
 	for (var i=0; i<menudata['menu'].length; i++) {
 		currentItem = menudata['menu'][i];
 		newli = returnMenuItem(currentItem['name'], i);
+		if(currentItem['name'] != "information_schema"){
+			subul = new Element('ul');
+			subul.addClass("sublist");
+			subul.id = "sublist" + i;
+			if (currentItem['items']) {
+				for (var j=0; j<currentItem['items'].length; j++) {
+					subli = returnSubMenuItem(currentItem.name, currentItem['items'][j].name, currentItem['items'][j].rowcount);
+					subul.appendChild(subli);
 
-		subul = new Element('ul');
-		subul.addClass("sublist");
-		subul.id = "sublist" + i;
-		if (currentItem['items']) {
-			for (var j=0; j<currentItem['items'].length; j++) {
-				subli = returnSubMenuItem(currentItem.name, currentItem['items'][j].name, currentItem['items'][j].rowcount);
-				subul.appendChild(subli);
-
-				sb.tableRowCounts[currentItem.name + '_' + currentItem['items'][j].name] = currentItem['items'][j].rowcount;
+					sb.tableRowCounts[currentItem.name + '_' + currentItem['items'][j].name] = currentItem['items'][j].rowcount;
+				}
 			}
-		}
-		newli.appendChild(subul);
-		ulmenu.appendChild(newli);
+			newli.appendChild(subul);
+			ulmenu.appendChild(newli);
 
-		sb.submenuHeights[i] = subul.clientHeight;
-		// these properties have to be set after the height is measured
-		subul.style.height = "0px";
-		subul.style.display = "none";
+			sb.submenuHeights[i] = subul.clientHeight;
+			// these properties have to be set after the height is measured
+			subul.style.height = "0px";
+			subul.style.display = "none";
+		}
 	}
 
 	menudata = null;
