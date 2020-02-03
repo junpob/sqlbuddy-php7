@@ -93,10 +93,10 @@ $langList['ja_JP'] = "日本語";
 if (isset($_COOKIE['sb_lang']) && array_key_exists($_COOKIE['sb_lang'], $langList)) {
 	$lang = preg_replace("/[^a-z0-9_]/i", "", $_COOKIE['sb_lang']);
 } else {
-	$lang = "en_US";
+	$lang = "ja_JP";
 }
 
-if ($lang != "en_US") {
+if ($lang != "ja_JP") {
 	// extend the cookie length
 	setcookie("sb_lang", $lang, $cookieLength);
 } else if (isset($_COOKIE['sb_lang'])) {
@@ -304,8 +304,6 @@ global $lang;
 		<div class="dblist"><ul>
 			<li id="sidehome"><a href="#page=home" onclick="sideMainClick('home.php', 0); return false;"><div class="menuicon">&gt;</div><div class="menutext"><?php echo __("Home"); ?></div></a></li>
 			<li id="sidequery"><a href="#page=query&topTab=1" onclick="sideMainClick('query.php', 1); return false;"><div class="menuicon">&gt;</div><div class="menutext"><?php echo __("Query"); ?></div></a></li>
-			<li id="sideimport"><a href="#page=import&topTab=2" onclick="sideMainClick('import.php', 2); return false;"><div class="menuicon">&gt;</div><div class="menutext"><?php echo __("Import"); ?></div></a></li>
-			<li id="sideexport"><a href="#page=export&topTab=3" onclick="sideMainClick('export.php', 3); return false;"><div class="menuicon">&gt;</div><div class="menutext"><?php echo __("Export"); ?></div></a></li>
 		</ul></div>
 
 		<div class="dblistheader"><?php echo __("Databases"); ?></div>
